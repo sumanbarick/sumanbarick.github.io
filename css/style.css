@@ -1,20 +1,36 @@
 * {
-  -webkit-user-select: none;  /* Chrome all / Safari all */
-  -moz-user-select: none;     /* Firefox all */
-  -ms-user-select: none;      /* IE 10+ */
-  user-select: none;          /* Likely future */      
+      -webkit-user-select: none;  /* Chrome all / Safari all */
+      -moz-user-select: none;     /* Firefox all */
+      -ms-user-select: none;      /* IE 10+ */
+      user-select: none;          /* Likely future */ 
+    box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    height:100%;
+    min-height:100%;
 }
 
 body { 
+    min-height:100%;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 /*    background: rgb(23,0,82);*/
 /*    background: #161675;*/
     background: #4141E4;
+    background-image: url("../img/Wallpapers/paradise-1110498_1280.jpg");
+    background-repeat:no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 /*    padding-bottom: 70px; */
 }
 
 ul {
     padding: 0;
     margin: 0;
+    list-style: none;
 }
 
 ul li {
@@ -23,6 +39,30 @@ ul li {
 
 label {
     font-weight: normal;
+}
+
+.mask {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255,255,255,.5);
+    z-index: 99;
+    display: none;
+}
+
+.btn {
+    font-size: 20px;
+    padding: 7px 15px;
+    background: #000;
+    color: #FFF;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background: rgba(0,0,233,.7);
 }
 
 .container-fluid {
@@ -45,27 +85,29 @@ label {
 /*    background: gray;*/
 /*    border-radius: 50%;*/
     position: absolute;
-    right: 30px;
-    top: 12px;
-    padding: 0.5px;
+    right: 15px;
+    top: 5px;
 }
 
 .toggleBtn span {
+    position: absolute;
     display: inline-block;
-    height: 14px;
-    width: 14px;
+    top: 1px;
+    bottom: 1px;
+    left: 1px;
+    right: 1px;
     background: orangered;
 /*    border-radius: 50%;*/
 }
 
-.toggleBtn.off span {
+.off>.toggleBtn span {
     display: none;
 }
 
 .tiles-container {
-    margin: 15px 0;
+    margin: 20px 0;
     position: relative;
-    margin-top: 100px;
+/*    margin-top: 100px;*/
     padding-bottom: 70px;
 }
 
@@ -91,6 +133,20 @@ label {
 */
 }
 
+.movementMode .tile.being-dragged .tileInnerContainer {
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+}
+
+.tile.being-dragged {
+    z-index: 9999;
+/*    background: rgba(255,255,255,.3);*/
+}
+
+.tile.being-dragged * {
+/*    display: none;*/
+}
+
 .tile .tileInnerContainer {
 /*    border: 1px solid #00F;*/
     height: 100%;
@@ -98,6 +154,13 @@ label {
     display: block;
     position: relative;
     overflow: hidden;
+    text-decoration: none;
+}
+
+.tile .tileInnerContainer .live,
+.tile .tileInnerContainer .plugin{
+    height: 100%;
+    width: 100%;
 }
 
 .tile .tileInnerContainer .tileMask {
@@ -111,14 +174,28 @@ label {
     display: none;
 }
 
+.tile .liveTxt {
+    position: absolute;
+/*    top: 0;*/
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20px;
+    text-align: center;
+    color: #FF0;
+    font-size: 1.8rem;
+}
+
 .resizeMode .tile .tileInnerContainer .tileMask {
     display: block;
 }
 
 .resizeMode .tile .tileInnerContainer,
 .movementMode .tile .tileInnerContainer {
-    -webkit-animation-duration: 1.5s;
-    animation-duration: 1.5s;
+    cursor: -webkit-grab;
+    cursor: grab;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
     -webkit-animation-iteration-count: infinite;
@@ -126,8 +203,8 @@ label {
 }
 
 .resizeMode .tile .tileInnerContainer {
-    -webkit-animation-name: pulse;
-    animation-name: pulse;
+    -webkit-animation-name: customPulse;
+    animation-name: customPulse;
 }
 
 .movementMode .tile .tileInnerContainer {
@@ -185,8 +262,10 @@ label {
 }
 
 .topPanel {
-    margin-top: 20px;
+    margin-top: 30px;
     color: #FFF;
+    padding: 0 10px;
+    height: 55px;
 }
 
 .topPanel .welcomeTxt {
@@ -243,67 +322,132 @@ label {
 }
 */
 
+#taskBar {
+    position: fixed;
+    height: 45px;
+    width: 100%;
+    bottom: 0;
+    z-index: 20;
+    left: 0;
+    right: 0;
+    background: rgba(25, 22, 22, 0.95);
+}
 
+#startBtn {
+    color: #E1E1EA;
+    background: #000;
+    border: 2px outset #4141e4;
+    font-weight: bold;
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 2px;
+}
+
+#startMenu {
+    width: 200px;
+    position: absolute;
+    bottom: 45px;
+    list-style: none;
+/*    background: #87e;*/
+/*    background: #000;*/
+    background: rgba(0, 0, 0, 0.9);
+    display: none;
+    padding: 10px 0;
+}
+
+#startMenu>li {
+    padding: 5px 15px;
+    color: #FFF;
+    position: relative;
+}
+
+#startMenu>li:hover {
+    background: #45F;
+}
+
+.tileResizeMenu {
+    text-align: left;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #FFF;
+    color: #111;
+    list-style: none;
+    padding: 10px 0;
+    z-index: 999;
+}
+
+.tileResizeMenu li {
+    padding: 3px 15px;
+}
+
+.tileResizeMenu li:hover {
+    background: #5A2FAD;
+    color: #FFF;    
+}
+
+.itemSelector {
+    position: fixed;
+    z-index: 100;
+    top: 70px;
+    height: 300px;
+    display: none;
+}
+
+.itemSelector .heading {
+    background: rgba(21, 9, 90, 0.84);
+    color: #FFF;
+    margin: 0;
+    padding: 10px;
+    font-size: 20px;
+}
+
+.itemSelector .imageSelector {
+    background: rgba(255, 255, 255, 0.9);
+    height: 100%;
+    overflow: auto;
+}
+
+.itemSelector .imageSelector li {
+    padding: 2px;
+    float: left;
+}
+
+.itemSelector .imageSelector li.selected,
+.itemSelector .imageSelector li:hover {
+    background: blue;
+    padding: 5px;
+}
+
+.itemSelector .imageSelector li img {
+    height: 100%;
+    width: 100%;
+}
+
+.itemSelector .panel_Btns {
+    background: rgba(0, 0, 0, 0.86);
+    text-align: right;
+    padding: 7px;
+}
+
+/*********** Media Queries ****************/
 
 @media (min-width: 768px) {
-    .taskbar .container-fluid {
-        padding: 0;
-    }
     
-    .taskbar .navbar-inverse .navbar-nav>li>a.startBtn {
-        color: #FFFFFF;
-        background: #000;
-        font-size: 16px;
-        padding: 20px 15px;
-    }
-    
-    .taskbar .navbar {
-        min-height: 30px;
-    }
-    
-    .taskbar .navbar-inverse {
-/*        background: rgb(63, 71, 121);*/
-        background: rgb(8, 12, 37);
-    }
-    
-    .taskbar *,
-    .taskbar .navbar-nav>li>a{
-        line-height: 0;
-    }
-    
-    .xsOnly {
-        display: none !important;
-    }
-    
-    .taskbar .toggleBtn {
-        right: 7px;
-        top: 4px;
-    }
-    
-    .dropdown-menu>li>a {
-        padding-left: 7px;
-    }
     
 }
 
 @media (max-width: 767px) {
-    .topPanel .welcomeTxt {
+    .welcomeTxt {
         display: none;
     }
     
-    .taskbar .navbar-inverse {
-        bottom: -1px;
+    .topPanel {
+        margin-top: 20px;
     }
     
-    .hideInXS {
-        display: none !important;
-    }
-    
-    #mobileStartBtn {
-        background: #000;
-        color: #FFF;
-        float: left;
-        margin-left: 15px;
+    .tiles-container {
+        margin: 10px 0;
     }
 }
 
@@ -311,48 +455,62 @@ label {
 /************* Animation Keyframes ******************/
 
 @-webkit-keyframes customShake {
+/*
   from, to {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+*/
+
+  25% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
   }
 
-  10%, 30%, 50%, 70%, 90% {
-    -webkit-transform: translate3d(-5px, 0, 0);
-    transform: translate3d(-5px, 0, 0);
+  0%, 50%, 100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-
-  20%, 40%, 60%, 80% {
-    -webkit-transform: translate3d(5px, 0, 0);
-    transform: translate3d(5px, 0, 0);
+    
+   75% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
   }
 }
 
 @keyframes customShake {
+  /*
   from, to {
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+*/
+
+   25% {
+    -webkit-transform: rotate(-2deg);
+    transform: rotate(-2deg);
   }
 
-  10%, 30%, 50%, 70%, 90% {
-    -webkit-transform: translate3d(-5px, 0, 0);
-    transform: translate3d(-5px, 0, 0);
+  0%, 50%, 100% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
-
-  20%, 40%, 60%, 80% {
-    -webkit-transform: translate3d(5px, 0, 0);
-    transform: translate3d(5px, 0, 0);
+    
+   75% {
+    -webkit-transform: rotate(2deg);
+    transform: rotate(2deg);
   }
 }
 
-@-webkit-keyframes pulse {
+@-webkit-keyframes customPulse {
   from {
     -webkit-transform: scale3d(1, 1, 1);
     transform: scale3d(1, 1, 1);
   }
 
   50% {
-    -webkit-transform: scale3d(1.05, 1.05, 1.05);
-    transform: scale3d(1.05, 1.05, 1.05);
+    -webkit-transform: scale3d(.95, .95, .95);
+    transform: scale3d(.95, .95, .95);
   }
 
   to {
@@ -361,15 +519,15 @@ label {
   }
 }
 
-@keyframes pulse {
+@keyframes customPulse {
   from {
     -webkit-transform: scale3d(1, 1, 1);
     transform: scale3d(1, 1, 1);
   }
 
   50% {
-    -webkit-transform: scale3d(1.05, 1.05, 1.05);
-    transform: scale3d(1.05, 1.05, 1.05);
+    -webkit-transform: scale3d(.95, .95, .95);
+    transform: scale3d(.95, .95, .95);
   }
 
   to {
